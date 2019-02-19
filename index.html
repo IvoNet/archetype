@@ -43,30 +43,34 @@
         </div>
 
         <form>
-            <div class="form-group">
-                <label for="mavenArchetype">Archetype</label>
-                <select class="form-control" id="mavenArchetype" v-model="selectedArchetype" required>
-                    <option v-for="(value, key, i) in archetypes" :value="key">{{value}}</option>
-                </select>
+            <div class="form-row">
+                <div class="form-group col-md-10">
+                    <label for="mavenArchetype">Archetype</label>
+                    <select class="form-control" id="mavenArchetype" v-model="selectedArchetype" required>
+                        <option v-for="(value, key, i) in archetypes" :value="key">{{value}}</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="archetypeVersion">Archetype version</label>
+                    <select class="form-control" id="archetypeVersion" v-model="selectedVersion" required>
+                        <option v-for="value in archetypeVersions" :value="value">{{value}}</option>
+                    </select>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="archetypeVersion">Archetype version</label>
-                <select class="form-control" id="archetypeVersion" v-model="selectedVersion" required>
-                    <option v-for="value in archetypeVersions" :value="value">{{value}}</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="groupId">Group</label>
-                <input type="text" class="form-control" id="groupId" placeholder="com.example" v-model="groupId"
-                       required>
-            </div>
-            <div class="form-group">
-                <label for="artifactId">Artifact</label>
-                <input type="text" class="form-control" id="artifactId" v-model="artifactId" required>
-            </div>
-            <div class="form-group">
-                <label for="projectVersion">Version</label>
-                <input type="text" class="form-control" id="projectVersion" v-model="projectVersion" required>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="groupId">Group</label>
+                    <input type="text" class="form-control" id="groupId" placeholder="com.example" v-model="groupId"
+                           required>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="artifactId">Artifact</label>
+                    <input type="text" class="form-control" id="artifactId" v-model="artifactId" required>
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="projectVersion">Version</label>
+                    <input type="text" class="form-control" id="projectVersion" v-model="projectVersion" required>
+                </div>
             </div>
             <div class="form-group">
                 <label for="dockerHandle">Docker handle</label>
@@ -74,8 +78,9 @@
                        v-model="dockerHandle" required>
             </div>
             <div class="form-group" v-show="show">
-                <label for="mvnArchetypeGenerate">Copy this in a terminal where you want to create your project and
-                    go...</label>
+                <label for="mvnArchetypeGenerate">
+                    Just copy this command as is in a terminal where you want to start your project and press enter...
+                </label>
                 <textarea class="form-control"
                           id="mvnArchetypeGenerate"
                           rows="11"
@@ -122,7 +127,7 @@
             dockerHandle: '',
             tooltip: "Click to copy to clipboard...",
             archetypes: {
-                'javaee8-payara-microprofile-archetype': 'JavaEE 8 / Payara 5 / Microprofile 2 quickstart Archetype (recommended).',
+                'javaee8-payara-microprofile-archetype': 'JavaEE 8 / Payara 5 / Microprofile 2 quickstart Archetype (recommended)',
                 'javaee8-essentials-archetype': 'JavaEE8 / Glassfish 5.1 essentials Archetype',
                 'javaee7-essentials-archetype': 'JavaEE7 / Glassfish 4.x essentials Archetype'
             },
