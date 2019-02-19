@@ -1,0 +1,189 @@
+<!--
+  ~ Copyright 2019 Ivo Woltring <WebMaster@ivonet.nl>
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>IvoNet.nl</title>
+    <!--<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>-->
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <style type="text/css">
+        .jumbotron {
+            background-color: #072D3C;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<div id="app">
+    <div class="container">
+        <div class="jumbotron">
+            <h1>Java/Jakarta EE - starter</h1>
+            <p>By filling in the form below you can easily generate the needed command to generate your Java/Jakarta EE
+                project</p>
+            <p>As soon as the form is valid it will show the Maven command</p>
+        </div>
+
+        <form>
+            <div class="form-group">
+                <label for="mavenArchetype">Archetype</label>
+                <select class="form-control" id="mavenArchetype" v-model="selectedArchetype" required>
+                    <option v-for="(value, key, i) in archetypes" :value="key">{{value}}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="archetypeVersion">Archetype version</label>
+                <select class="form-control" id="archetypeVersion" v-model="selectedVersion" required>
+                    <option v-for="value in archetypeVersions" :value="value">{{value}}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="groupId">Group</label>
+                <input type="text" class="form-control" id="groupId" placeholder="com.example" v-model="groupId"
+                       required>
+            </div>
+            <div class="form-group">
+                <label for="artifactId">Artifact</label>
+                <input type="text" class="form-control" id="artifactId" v-model="artifactId" required>
+            </div>
+            <div class="form-group">
+                <label for="projectVersion">Version</label>
+                <input type="text" class="form-control" id="projectVersion" v-model="projectVersion" required>
+            </div>
+            <div class="form-group">
+                <label for="dockerHandle">Docker handle</label>
+                <input type="text" class="form-control" id="dockerHandle" placeholder="Your docker hub name"
+                       v-model="dockerHandle" required>
+            </div>
+            <div class="form-group" v-show="show">
+                <label for="mvnArchetypeGenerate">Copy this in a terminal where you want to create your project and
+                    go...</label>
+                <textarea class="form-control"
+                          id="mvnArchetypeGenerate"
+                          rows="11"
+                          readonly
+                          :value="mvnArchetypeGenerate"
+                          @click.stop.prevent="copyMvnArchetypeCommand"
+                          aria-describedby="mvnCommandHelp"
+                          data-toggle="tooltip" data-placement="top"
+                          data-delay='{"show":"0", "hide":"3000"}'
+                          :title="tooltip"
+                          @mouseleave="resetTooltip">
+                </textarea>
+                <small id="mvnCommandHelp" class="form-text text-muted">By clicking on the text it will be copied to the
+                    clipboard
+                </small>
+            </div>
+        </form>
+        <input type="hidden" id="copy-code" :value="mvnArchetypeGenerate">
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+<script lang="JavaScript">
+    "use strict";
+
+    new Vue({
+        el: '#app',
+        data: {
+            visible: false,
+            selectedArchetype: 'javaee8-payara-microprofile-archetype',
+            selectedVersion: '1.0',
+            groupId: '',
+            artifactId: 'demo',
+            projectVersion: '1.0-SNAPSHOT',
+            dockerHandle: '',
+            tooltip: "Click to copy to clipboard...",
+            archetypes: {
+                'javaee8-payara-microprofile-archetype': 'JavaEE 8 / Payara 5 / Microprofile 2 quickstart Archetype (recommended).',
+                'javaee8-essentials-archetype': 'JavaEE8 / Glassfish 5.1 essentials Archetype',
+                'javaee7-essentials-archetype': 'JavaEE7 / Glassfish 4.x essentials Archetype'
+            },
+            versions: {
+                'javaee8-payara-microprofile-archetype': ['1.0', '0.0.2', '0.0.1'],
+                'javaee8-essentials-archetype': ['0.0.3', '0.0.2', '0.0.1'],
+                'javaee7-essentials-archetype': ['0.0.3', '0.0.2', '0.0.1']
+            }
+        },
+        computed: {
+            archetypeVersions: function () {
+                this.selectedVersion = this.versions[this.selectedArchetype][0];
+                return this.versions[this.selectedArchetype]
+            },
+            mvnArchetypeGenerate: function () {
+                return `mvn archetype:generate
+ -DarchetypeGroupId=nl.ivonet
+ -DarchetypeArtifactId=${this.selectedArchetype}
+ -DarchetypeVersion=${this.selectedVersion}
+ -DgroupId=${this.groupId}
+ -DartifactId=${this.artifactId}
+ -Ddocker-hub-name=${this.dockerHandle}
+ -Dversion=${this.projectVersion}
+ -Darchetype.interactive=false
+ --batch-mode`
+            },
+            show: function () {
+                return this.groupId &&
+                    this.artifactId &&
+                    this.projectVersion &&
+                    this.dockerHandle
+            }
+        },
+        methods: {
+            copyMvnArchetypeCommand() {
+                let testingCodeToCopy = document.querySelector('#copy-code');
+                testingCodeToCopy.setAttribute('type', 'text');
+                testingCodeToCopy.select();
+
+                try {
+                    var successful = document.execCommand('copy');
+                    var msg = successful ? 'successful' : 'unsuccessful';
+                    // alert('Testing code was copied ' + msg);
+                    console.log('Maven Archetype command was copied ' + msg);
+                    this.tooltip = "Copied!";
+                } catch (err) {
+                    console.log("Could not copy to clipbaord.");
+                    alert('Oops, unable to copy');
+                }
+
+                /* unselect the range */
+                testingCodeToCopy.setAttribute('type', 'hidden');
+                window.getSelection().removeAllRanges()
+            },
+            resetTooltip: function () {
+                this.tooltip = 'Click to copy to clipboard...'
+            }
+        }
+    });
+</script>
+</body>
+</html>
