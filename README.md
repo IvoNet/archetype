@@ -13,7 +13,10 @@ easier than before.
 * Paste in terminal where you want to generate
 * done.
 
+## Fun fact
 
+This is my first vue.js application :-) 
+I know I did it in the simplest form available but it works and I'm learning.
 
 # license
 
