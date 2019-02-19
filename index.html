@@ -99,7 +99,7 @@
             </div>
         </form>
         <input type="hidden" id="copy-code" :value="mvnArchetypeGenerate">
-        <div class="fixed-bottom text-center">Copyright (c) 2019 - Ivo Woltring - <a href="https://www.ivonet.nl">www.ivonet.nl</a> - Apache 2 license </div>
+        <div class="fixed-bottom text-center">Copyright &copy; 2019 - Ivo Woltring - <a href="https://www.ivonet.nl">www.ivonet.nl</a> - Apache 2 license </div>
     </div>
 </div>
 
@@ -170,9 +170,9 @@
 
                 try {
                     var successful = document.execCommand('copy');
-                    var msg = successful ? 'successful' : 'unsuccessful';
-                    // alert('Testing code was copied ' + msg);
-                    console.log('Maven Archetype command was copied ' + msg);
+                    var msg = successful ? 'successfully' : 'unsuccessfully';
+                    // alert('Maven Archetype command was copied to clipboard ' + msg);
+                    console.log('Maven Archetype command was copied to clipboard ' + msg);
                     this.tooltip = "Copied!";
                 } catch (err) {
                     console.log("Could not copy to clipbaord.");
