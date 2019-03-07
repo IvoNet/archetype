@@ -133,7 +133,7 @@
                 'javaee7-essentials-archetype': 'JavaEE7 / Glassfish 4.x essentials Archetype'
             },
             versions: {
-                'javaee8-payara-microprofile-archetype': ['1.0', '0.0.2', '0.0.1'],
+                'javaee8-payara-microprofile-archetype': ['1.1', '1.0', '0.0.2', '0.0.1'],
                 'javaee8-essentials-archetype': ['0.0.3', '0.0.2', '0.0.1'],
                 'javaee7-essentials-archetype': ['0.0.3', '0.0.2', '0.0.1']
             }
@@ -153,7 +153,7 @@
  -Ddocker-hub-name=${this.dockerHandle}
  -Dversion=${this.projectVersion}
  -Darchetype.interactive=false
- --batch-mode`
+ --batch-mode -U`
             },
             show: function () {
                 return this.groupId &&
