@@ -7,7 +7,7 @@ easier than before.
 
 ## usage
 
-* Go [here](https://ivonet.github.com/archetype/).
+* Go [here](https://ivonet.github.io/archetype/).
 * Just fill in the correct info
 * Click on the generated command
 * Paste in terminal where you want to generate
